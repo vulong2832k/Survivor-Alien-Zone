@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a90d85f75d61a4ab97f881e6f1a508, type: 3}
+  m_Name: Map 1
+  m_EditorClassIdentifier: 
+  enemies:
+  - enemyPrefab: {fileID: 4423684298876551982, guid: c5ff933843631f44b92b52be92a99246, type: 3}
+    spawnCount: 10
+  - enemyPrefab: {fileID: 841121268840413462, guid: 5a01a2a375f1e5a44afef654a48b873e, type: 3}
+    spawnCount: 15
