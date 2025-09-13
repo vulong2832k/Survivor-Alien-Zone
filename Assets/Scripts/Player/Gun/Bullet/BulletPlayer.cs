@@ -9,7 +9,7 @@ public class BulletPlayer : MonoBehaviour
     [SerializeField] private float lifeTimer = 3f;
 
     [Header("Effects: ")]
-    [SerializeField] private GameObject _effectHitToWall;
+    [SerializeField] private string _hitEffectKey = "HitEffect";
 
     private float _timer;
 
@@ -27,15 +27,11 @@ public class BulletPlayer : MonoBehaviour
         transform.Translate(Vector3.forward * _speed * Time.deltaTime);
         _timer += Time.deltaTime;
         if(_timer >= lifeTimer)
-            gameObject.SetActive(false);
+            MultiObjectPool.Instance.ReturnToPool("PlayerBullet", gameObject);
     }
     private void EffectHitToWall()
     {
-        if(_effectHitToWall != null)
-        {
-            GameObject effect = Instantiate(_effectHitToWall, transform.position, _effectHitToWall.transform.rotation);
-            Destroy(effect, 2f);
-        }
+        GameObject effect = MultiObjectPool.Instance.SpawnFromPool(_hitEffectKey, transform.position, Quaternion.identity);
     }
     public void SetDamage(int damage) => this._damage = damage;
 
@@ -47,13 +43,14 @@ public class BulletPlayer : MonoBehaviour
         if (damageable != null)
         {
             damageable.TakeDamage(_damage);
-            gameObject.SetActive(false);
+            MultiObjectPool.Instance.ReturnToPool("PlayerBullet", gameObject);
+            return;
         }
 
         if (other.gameObject.CompareTag("Ground") && !other.CompareTag("Bullet"))
         {
-            gameObject.SetActive(false);
             EffectHitToWall();
+            MultiObjectPool.Instance.ReturnToPool("PlayerBullet", gameObject);
         }
     }
 }

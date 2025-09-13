@@ -261,6 +261,7 @@ MonoBehaviour:
   _cooldown: 0
   _dataEnemy: {fileID: 11400000, guid: f45d43528f5293e4db96b35e1d8e1e77, type: 2}
   _targetPlayer: {fileID: 0}
+  _enemyKey: Enemy Normal
 --- !u!195 &5459025969470976625
 NavMeshAgent:
   m_ObjectHideFlags: 0

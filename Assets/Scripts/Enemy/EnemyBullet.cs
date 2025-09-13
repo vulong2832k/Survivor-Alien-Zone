@@ -6,6 +6,7 @@ public class EnemyBullet : MonoBehaviour
     [Header("Attributes: ")]
     [SerializeField] private float _speed;
     [SerializeField] private float _lifeTime = 3f;
+    [SerializeField] private string _bulletKey = "EnemyBullet";
 
     private int _damage;
     private Vector3 _direction;
@@ -23,7 +24,7 @@ public class EnemyBullet : MonoBehaviour
         _lifeTimer -= Time.deltaTime;
         if (_lifeTimer <= 0f)
         {
-            BulletPoolEnemy.Instance.ReturnBullet(gameObject);
+            MultiObjectPool.Instance.ReturnToPool(_bulletKey, gameObject);
         }
     }
     private void BulletHandle()
@@ -49,12 +50,11 @@ public class EnemyBullet : MonoBehaviour
             if (damageable != null)
                 damageable.TakeDamage(_damage);
 
-            BulletPoolEnemy.Instance.ReturnBullet(gameObject);
+            MultiObjectPool.Instance.ReturnToPool(_bulletKey, gameObject);
         }
         else if (!other.isTrigger && !other.CompareTag("Enemy"))
         {
-            BulletPoolEnemy.Instance.ReturnBullet(gameObject);
+            MultiObjectPool.Instance.ReturnToPool(_bulletKey, gameObject);
         }
     }
-
 }

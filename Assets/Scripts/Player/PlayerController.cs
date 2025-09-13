@@ -307,9 +307,11 @@ public class PlayerController : MonoBehaviour, IDamageable
                 gun.AddReserveAmmo(addAmount);
             }
         }
-        _weaponSwitching.CurrentGun?.UpdateAmmoUIText();
 
+        // 🔥 Update UI sau khi thay đổi
+        _weaponSwitching.CurrentGun?.UpdateAmmoUIText();
     }
+
     #endregion
     #region UseItem
     private void UseMedicine(MedicineSO medicineSO, EquipmentSlotUI slotUI)

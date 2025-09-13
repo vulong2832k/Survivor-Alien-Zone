@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
 
 public class BreakableWall : MonoBehaviour
@@ -6,6 +8,7 @@ public class BreakableWall : MonoBehaviour
     [SerializeField] private int _pieces;
     [SerializeField] private float _explosionForce;
     [SerializeField] private float _explosionRadius;
+    [SerializeField] private string _pieceKey = "WallPiece";
 
     void Update()
     {
@@ -24,7 +27,10 @@ public class BreakableWall : MonoBehaviour
             {
                 for (int z = 0; z < _pieces; z++)
                 {
-                    GameObject piece = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    GameObject piece = MultiObjectPool.Instance.SpawnFromPool(_pieceKey, transform.position, transform.rotation);
+
+                    if (piece == null) continue;
+
                     piece.transform.localScale = transform.localScale / _pieces;
                     piece.transform.position = transform.position + new Vector3(
                         (x - _pieces / 2f) * piece.transform.localScale.x,
@@ -32,14 +38,17 @@ public class BreakableWall : MonoBehaviour
                         (z - _pieces / 2f) * piece.transform.localScale.z
                     );
 
-                    Rigidbody rb = piece.AddComponent<Rigidbody>();
-                    rb.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+                    Rigidbody rb = piece.GetComponent<Rigidbody>();
+                    if(rb == null) rb = piece.AddComponent<Rigidbody>();
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
 
-                    Destroy(piece, Random.Range(2f, 5f));
+                    rb.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
                 }
             }
         }
         
         Destroy(gameObject);
     }
+
 }

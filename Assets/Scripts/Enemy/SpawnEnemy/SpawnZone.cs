@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class EnemySpawnInfo
 {
-    public GameObject enemyPrefab;
+    public string poolKey;
     public int count;
 }
 
@@ -32,18 +32,21 @@ public class SpawnZone : MonoBehaviour
             for (int i = 0; i < info.count; i++)
             {
                 Vector3 pos = GetRandomPointInArea();
-                EnemyPoolManager.Instance.SpawnEnemy(info.enemyPrefab, pos, Quaternion.identity);
+                GameObject enemy = MultiObjectPool.Instance.SpawnFromPool(info.poolKey,pos,Quaternion.identity);
             }
         }
     }
 
     private Vector3 GetRandomPointInArea()
     {
+        if (spawnArea == null)
+            spawnArea = transform;
+
         Vector3 size = spawnArea.localScale;
         Vector3 center = spawnArea.position;
 
-        float x = Random.Range(-size.x / 2, size.x / 2);
-        float z = Random.Range(-size.z / 2, size.z / 2);
+        float x = Random.Range(-size.x / 2f, size.x / 2f);
+        float z = Random.Range(-size.z / 2f, size.z / 2f);
 
         return new Vector3(center.x + x, center.y, center.z + z);
     }

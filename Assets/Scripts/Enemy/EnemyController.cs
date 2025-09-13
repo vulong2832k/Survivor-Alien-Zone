@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     [Header("References: ")]
     [SerializeField] private EnemySO _dataEnemy;
     [SerializeField] private Transform _targetPlayer;
-    [SerializeField] private GameObject _originPrefab;
+    [SerializeField] private string _enemyKey = "Enemy";
 
     [Header("Components: ")]
     private NavMeshAgent _agent;
@@ -20,14 +20,6 @@ public class EnemyController : MonoBehaviour, IDamageable
     private bool _isAttacking = false;
     private bool _playerInRange = false;
 
-    public void SetPrefabReference(GameObject prefab)
-    {
-        _originPrefab = prefab;
-    }
-    public GameObject GetPrefabReference()
-    {
-        return _originPrefab;
-    }
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -139,7 +131,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     }
     private void Die()
     {
-        EnemyPoolManager.Instance.ReturnToPool(_originPrefab, gameObject);
+        MultiObjectPool.Instance.ReturnToPool(_enemyKey, gameObject);
     }
     private void OnDrawGizmosSelected()
     {
