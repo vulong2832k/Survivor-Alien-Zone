@@ -6,12 +6,13 @@ public class EnemyController : MonoBehaviour, IDamageable
 {
     [Header("Attributes: ")]
     [SerializeField] private int _currentHP;
-    [SerializeField] private float _cooldown;
+    private float _cooldown;
 
     [Header("References: ")]
-    [SerializeField] private EnemySO _dataEnemy;
+    public EnemySO dataEnemy;
     [SerializeField] private Transform _targetPlayer;
     [SerializeField] private string _enemyKey = "Enemy";
+    [SerializeField] private EnemyStats _stats;
 
     [Header("Components: ")]
     private NavMeshAgent _agent;
@@ -23,10 +24,11 @@ public class EnemyController : MonoBehaviour, IDamageable
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _stats = GetComponent<EnemyStats>();
+        _targetPlayer = FindAnyObjectByType<PlayerController>().transform;
     }
     private void OnEnable()
     {
-        _currentHP = _dataEnemy.MaxHP;
         _cooldown = 0f;
         _isAttacking = false;
         _playerInRange = false;
@@ -38,8 +40,8 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         StartCoroutine(WaitForPlayer());
 
-        if (_dataEnemy != null)
-            _agent.speed = _dataEnemy.MoveSpeed;
+        if (dataEnemy != null)
+            _agent.speed = dataEnemy.MoveSpeed;
     }
     private void Update()
     {
@@ -55,6 +57,11 @@ public class EnemyController : MonoBehaviour, IDamageable
             if (moveDir != Vector3.zero)
                 transform.rotation = Quaternion.LookRotation(moveDir);
         }
+    }
+    public void ApplyStats()
+    {
+        _currentHP = _stats.HP;
+        UpdateColorEnemyByLevel();
     }
     private IEnumerator WaitForPlayer()
     {
@@ -73,7 +80,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (_targetPlayer == null) return;
 
         float distance = Vector3.Distance(transform.position, _targetPlayer.position);
-        _playerInRange = distance <= _dataEnemy.AttackRange;
+        _playerInRange = distance <= dataEnemy.AttackRange;
 
         if (_playerInRange && _targetPlayer != null)
         {
@@ -104,8 +111,8 @@ public class EnemyController : MonoBehaviour, IDamageable
         _isAttacking = true;
         StopMoving();
 
-        _dataEnemy.AttackStrategy.EnemyAttack(transform, _targetPlayer);
-        _cooldown = _dataEnemy.AttackCooldown;
+        dataEnemy.AttackStrategy.EnemyAttack(transform, _targetPlayer, _stats.Damage);
+        _cooldown = dataEnemy.AttackCooldown;
 
         yield return new WaitForSeconds(1f);
 
@@ -129,6 +136,24 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (_currentHP <= 0)
             Die();
     }
+    private void UpdateColorEnemyByLevel()
+    {
+        Renderer renderer = GetComponentInChildren<Renderer>();
+        if (renderer == null) return;
+
+        Color color = _stats.Level switch
+        {
+            LevelEnemy.Green => Color.green,
+            LevelEnemy.Blue => Color.blue,
+            LevelEnemy.Violet => new Color(0.5f, 0f, 1f),
+            LevelEnemy.Yellow => Color.yellow,
+            LevelEnemy.Orange => new Color(1f, 0.5f, 0f),
+            LevelEnemy.Red => Color.red,
+            _ => Color.white
+        };
+
+        renderer.material.color = color;
+    }
     private void Die()
     {
         MultiObjectPool.Instance.ReturnToPool(_enemyKey, gameObject);
@@ -136,6 +161,6 @@ public class EnemyController : MonoBehaviour, IDamageable
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _dataEnemy?.AttackRange ?? 1f);
+        Gizmos.DrawWireSphere(transform.position, dataEnemy?.AttackRange ?? 1f);
     }
 }

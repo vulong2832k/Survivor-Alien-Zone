@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1967579622908775366}
   - component: {fileID: 2710912385361125090}
   - component: {fileID: 9010028345315002441}
+  - component: {fileID: -5502961358939934613}
   m_Layer: 0
   m_Name: Enemy Ranger
   m_TagString: Untagged
@@ -151,9 +152,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentHP: 0
   _cooldown: 0
-  _dataEnemy: {fileID: 11400000, guid: 72368a04046cedc40aa0c4af8865131d, type: 2}
+  dataEnemy: {fileID: 11400000, guid: 72368a04046cedc40aa0c4af8865131d, type: 2}
   _targetPlayer: {fileID: 0}
   _enemyKey: Enemy Ranger
+  _stats: {fileID: 0}
 --- !u!195 &9010028345315002441
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -176,6 +178,18 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &-5502961358939934613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841121268840413462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57942941c3c875746b3064a9ae3c927f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1388334550566462816
 GameObject:
   m_ObjectHideFlags: 0

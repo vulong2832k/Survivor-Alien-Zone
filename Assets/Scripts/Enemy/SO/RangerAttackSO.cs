@@ -4,30 +4,31 @@ using UnityEngine;
 public class RangerAttackSO : EnemyAttackSO
 {
     [SerializeField] private GameObject _bulletAttack;
-    [SerializeField] private int _damage;
 
-    public override void EnemyAttack(Transform enemy, Transform target)
+    public override AttackResult EnemyAttack(Transform enemy, Transform target, int damage)
     {
         Transform firePoint = enemy.Find("FirePoint");
-        if (firePoint == null) return;
+        if (firePoint == null) return null;
 
         Vector3 dir = (target.position - firePoint.position).normalized;
 
-        GameObject bullet = MultiObjectPool.Instance.SpawnFromPool(
-            "EnemyBullet",
-            firePoint.position,
-            Quaternion.LookRotation(dir)
-        );
+        GameObject bullet = MultiObjectPool.Instance.SpawnFromPool("EnemyBullet",firePoint.position,Quaternion.LookRotation(dir));
 
         if (bullet != null)
         {
             EnemyBullet bulletScript = bullet.GetComponent<EnemyBullet>();
             if (bulletScript != null)
             {
-                bulletScript.SetDamage(_damage);
+                bulletScript.SetDamage(damage);
                 bulletScript.SetDirection(dir);
             }
         }
-    }
 
+        return new AttackResult
+        {
+            attacker = enemy,
+            target = target,
+            damage = damage
+        };
+    }
 }

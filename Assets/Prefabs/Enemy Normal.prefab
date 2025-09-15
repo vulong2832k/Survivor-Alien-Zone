@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 3280424856323551742}
   - component: {fileID: 1393668695232390362}
   - component: {fileID: 5459025969470976625}
+  - component: {fileID: -4677339044451437447}
   m_Layer: 0
   m_Name: Enemy Normal
   m_TagString: Untagged
@@ -259,9 +260,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentHP: 0
   _cooldown: 0
-  _dataEnemy: {fileID: 11400000, guid: f45d43528f5293e4db96b35e1d8e1e77, type: 2}
+  dataEnemy: {fileID: 11400000, guid: f45d43528f5293e4db96b35e1d8e1e77, type: 2}
   _targetPlayer: {fileID: 0}
   _enemyKey: Enemy Normal
+  _stats: {fileID: 0}
 --- !u!195 &5459025969470976625
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -284,6 +286,18 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &-4677339044451437447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4423684298876551982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57942941c3c875746b3064a9ae3c927f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5136799911591423014
 GameObject:
   m_ObjectHideFlags: 0

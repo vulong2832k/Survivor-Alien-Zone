@@ -1,10 +1,18 @@
-using UnityEngine;
+﻿using UnityEngine;
+
+[System.Serializable]
+public class EnemyLevelSpawn
+{
+    public LevelEnemy level;
+    public int count;
+}
 
 [System.Serializable]
 public class EnemySpawnInfo
 {
     public string poolKey;
-    public int count;
+    public EnemySO enemyData;
+    public EnemyLevelSpawn[] levelDistribution;
 }
 
 [RequireComponent(typeof(BoxCollider))]
@@ -15,6 +23,11 @@ public class SpawnZone : MonoBehaviour
     [SerializeField] private bool triggerOnce = true;
 
     private bool hasTriggered = false;
+
+    private void Awake()
+    {
+        GetComponent<BoxCollider>().isTrigger = true;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -29,27 +42,43 @@ public class SpawnZone : MonoBehaviour
     {
         foreach (var info in spawnList)
         {
-            for (int i = 0; i < info.count; i++)
+            foreach (var levelInfo in info.levelDistribution)
             {
-                Vector3 pos = GetRandomPointInArea();
-                GameObject enemy = MultiObjectPool.Instance.SpawnFromPool(info.poolKey,pos,Quaternion.identity);
+                for (int i = 0; i < levelInfo.count; i++)
+                {
+                    Vector3 pos = GetRandomPointInArea();
+                    GameObject enemy = MultiObjectPool.Instance.SpawnFromPool(info.poolKey, pos, Quaternion.identity);
+                    if (enemy == null) continue;
+
+                    EnemyController controller = enemy.GetComponent<EnemyController>();
+                    if (controller != null)
+                    {
+                        controller.dataEnemy = info.enemyData;
+                        enemy.GetComponent<EnemyStats>().Init(levelInfo.level);
+                    }
+                }
             }
         }
     }
 
     private Vector3 GetRandomPointInArea()
     {
-        if (spawnArea == null)
-            spawnArea = transform;
+        Bounds bounds = spawnArea.GetComponent<BoxCollider>().bounds;
 
-        Vector3 size = spawnArea.localScale;
-        Vector3 center = spawnArea.position;
+        float x = Random.Range(bounds.min.x, bounds.max.x);
+        float z = Random.Range(bounds.min.z, bounds.max.z);
+        float y = bounds.max.y + 5f;
 
-        float x = Random.Range(-size.x / 2f, size.x / 2f);
-        float z = Random.Range(-size.z / 2f, size.z / 2f);
+        Vector3 spawnPos = new Vector3(x, y, z);
 
-        return new Vector3(center.x + x, center.y, center.z + z);
+        if (Physics.Raycast(spawnPos, Vector3.down, out RaycastHit hit, Mathf.Infinity))
+        {
+            return hit.point;
+        }
+
+        return spawnPos;
     }
+
 
     private void OnDrawGizmosSelected()
     {

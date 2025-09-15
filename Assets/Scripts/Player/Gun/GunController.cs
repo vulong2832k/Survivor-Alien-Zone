@@ -19,7 +19,6 @@ public class GunController : MonoBehaviour
     [SerializeField] private int _reserveAmmo;
     private float _fireCooldown;
 
-    // Data lấy từ Holder
     public GunAttributes GunAttributes => _soHolder.GunAttributes;
     public GunType GunType => GunAttributes.GunType;
 

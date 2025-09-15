@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: "L\xEDnh qu\xE8n"
   _maxHP: 150
+  _damage: 5
   _moveSpeed: 1
   _attackCooldown: 3
   _attackRange: 1.5
   _typeEnemy: 0
+  _levelEnemy: 0
   _attackStrategy: {fileID: 11400000, guid: 5930d4fada115be42bb6fc0b3ed017a9, type: 2}

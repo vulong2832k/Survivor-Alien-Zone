@@ -37,8 +37,6 @@ public class BulletPlayer : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Va chạm với: " + other.gameObject.name);
-
         IDamageable damageable = other.GetComponent<IDamageable>();
         if (damageable != null)
         {
