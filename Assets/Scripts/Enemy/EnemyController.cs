@@ -111,12 +111,25 @@ public class EnemyController : MonoBehaviour, IDamageable
         _isAttacking = true;
         StopMoving();
 
-        dataEnemy.AttackStrategy.EnemyAttack(transform, _targetPlayer, _stats.Damage);
+        AttackResult result = dataEnemy.AttackStrategy.EnemyAttack(transform, _targetPlayer, _stats.Damage);
+
+        if (result != null && result.target != null)
+        {
+            IDamageable damageable = result.target.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(result.damage);
+            }
+        }
         _cooldown = dataEnemy.AttackCooldown;
 
         yield return new WaitForSeconds(1f);
 
         _isAttacking = false;
+    }
+    public void StartExlosionAttackCoroutine(IEnumerator routine)
+    {
+        StartCoroutine(routine);
     }
     private void StopMoving()
     {
@@ -157,10 +170,14 @@ public class EnemyController : MonoBehaviour, IDamageable
     private void Die()
     {
         MultiObjectPool.Instance.ReturnToPool(_enemyKey, gameObject);
+        EnemyLoot loot = GetComponent<EnemyLoot>();
+        loot?.DropLoot();
     }
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, dataEnemy?.AttackRange ?? 1f);
+
     }
+    
 }

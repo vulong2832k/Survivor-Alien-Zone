@@ -2,9 +2,10 @@ using UnityEngine;
 
 public enum TypeEnemy
 {
-    normal,
-    ranger,
-    boss,
+    normal = 1,
+    ranger = 2,
+    boss = 3,
+    Explosion = 4,
 }
 public enum LevelEnemy
 {

@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 4858527425067649088}
   - component: {fileID: 7543419181921658194}
   m_Layer: 0
-  m_Name: Dragunov
+  m_Name: ItemDragunov
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -316,7 +316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 5a6d7ef0fd0cc3446ba116a99237c98e, type: 2}
   amount: 1
-  pickupRange: 0.5
+  pickupRange: 1
   pickupKey: 99
   _rotateSpeed: 120
 --- !u!1 &5059319283221097812

@@ -19,6 +19,12 @@ public class ItemPickup : MonoBehaviour
     [Header("Attributes: ")]
     [SerializeField] private float _rotateSpeed;
 
+    public void Setup(ItemSO data, int amt)
+    {
+        itemData = data;
+        amount = amt;
+    }
+
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
@@ -60,13 +66,9 @@ public class ItemPickup : MonoBehaviour
             int remaining = _playerInventory.AddItem(itemData, amount);
 
             if (remaining <= 0)
-            {
                 Destroy(gameObject);
-            }
             else
-            {
                 amount = remaining;
-            }
         }
     }
     private void RotateItemPickUp()

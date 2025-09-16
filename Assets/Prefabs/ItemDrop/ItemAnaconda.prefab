@@ -1725,7 +1725,7 @@ GameObject:
   - component: {fileID: 2249316973507528962}
   - component: {fileID: 9124168836943487179}
   m_Layer: 0
-  m_Name: Anaconda
+  m_Name: ItemAnaconda
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1783,7 +1783,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 563ae65edca0ddb47ac1ecd134a7edd1, type: 2}
   amount: 1
-  pickupRange: 0.5
+  pickupRange: 1
   pickupKey: 99
   _rotateSpeed: 120
 --- !u!1 &9049698539333163806

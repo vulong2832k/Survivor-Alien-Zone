@@ -16,6 +16,7 @@ public class ItemSO : ScriptableObject
     public string itemName;
     public Sprite icon;
     public ItemType itemType;
+    public GameObject worldPrefab;
 
     [Header("Stacking")]
     public bool isStackable;

@@ -18,6 +18,6 @@ MonoBehaviour:
   _moveSpeed: 5
   _attackCooldown: 2
   _attackRange: 5
-  _typeEnemy: 1
+  _typeEnemy: 2
   _levelEnemy: 0
   _attackStrategy: {fileID: 11400000, guid: 850f27716090c014ea85ae74a37e7d12, type: 2}
