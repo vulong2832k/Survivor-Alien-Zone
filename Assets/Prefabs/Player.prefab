@@ -257,6 +257,7 @@ GameObject:
   - component: {fileID: 1957770431725255060}
   - component: {fileID: 1360831216728021508}
   - component: {fileID: 6212175574586348133}
+  - component: {fileID: 159536819047486925}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -360,12 +361,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7fa4653eaf55f048bd3b47fc020b7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slotCount: 10
   slots:
   - item: {fileID: 11400000, guid: e100b4a7c8831d849982c1e90b8e4405, type: 2}
     amount: 10
   - item: {fileID: 11400000, guid: e100b4a7c8831d849982c1e90b8e4405, type: 2}
     amount: 10
+  _slotCount: 10
+--- !u!114 &159536819047486925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6429700081031221906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c32856fa270f3428e6001ed00a39fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 0}
+  _healthText: {fileID: 0}
+  _healthFill: {fileID: 0}
+  _levelText: {fileID: 0}
+  _xpFill: {fileID: 0}
 --- !u!1 &7066607469197108848
 GameObject:
   m_ObjectHideFlags: 0

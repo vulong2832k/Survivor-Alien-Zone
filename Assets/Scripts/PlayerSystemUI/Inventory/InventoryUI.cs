@@ -10,14 +10,23 @@ public class InventoryUI : MonoBehaviour
 
     private void Awake()
     {
-        _inventory = FindAnyObjectByType<InventorySystem>();
+        if (_inventory == null)
+            _inventory = FindAnyObjectByType<InventorySystem>();
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        for (int i = 0; i < _inventory.slots.Count; i++)
+        if (_inventory != null)
         {
-            _slotUIs[i].UpdateUI();
+            Setup(_inventory);
+            _inventory.OnInventoryChanged += RefreshUI;
+        }
+    }
+    private void OnDisable()
+    {
+        if (_inventory != null)
+        {
+            _inventory.OnInventoryChanged -= RefreshUI;
         }
     }
     public void Setup(InventorySystem inventory)
@@ -33,6 +42,16 @@ public class InventoryUI : MonoBehaviour
             var ui = Instantiate(_slotPrefab, _slotParent);
             _slotUIs[i] = ui;
             ui.SetSlot(_inventory.slots[i]);
+        }
+        RefreshUI();
+    }
+    private void RefreshUI()
+    {
+        if (_slotUIs == null) return;
+
+        for (int i = 0; i < _slotUIs.Length; i++)
+        {
+            _slotUIs[i]?.UpdateUI();
         }
     }
 }

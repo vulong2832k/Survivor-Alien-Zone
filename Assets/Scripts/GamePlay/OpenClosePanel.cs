@@ -50,6 +50,9 @@ public class OpenClosePanel : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Time.timeScale = 0f;
+
+            var inventoryUI = _playerSystem.GetComponentInChildren<InventoryUI>();
+            inventoryUI?.Setup(FindAnyObjectByType<InventorySystem>());
         }
         else
         {

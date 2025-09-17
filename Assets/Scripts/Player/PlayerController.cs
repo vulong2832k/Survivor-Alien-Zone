@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private float _healRecoveryBasic;
     [SerializeField] private float _healRecoveryBonus;
     [SerializeField] private float _healRecoveryTotal;
+    public int MaxHP => _maxHP;
+    public int CurrentHP => _currentHP;
 
     [Header("Move: ")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -74,36 +76,37 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private TextMeshProUGUI _healthText;
     [SerializeField] private Image _currentHealthImg;
 
+    //Event
+    public event Action<int, int> OnHealthChanged;
+    public event Action<int, int, int> OnXPChanged;
+
     private void Awake()
     {
-        GetAttributesWhenStart();
+        InitAttributes();
         GetComponentWhenStart();
     }
 
     void Start()
     {
-        GetStateWhenStart();
-        UpdateHealthUI();
+        InitStateMachine();
+        OnHealthChanged?.Invoke(_currentXP, _maxHP);
+        OnXPChanged?.Invoke(_currentXP, _xpToNextLevel, _currentLevel);
         StartCoroutine(HealOverTime());
-        InitLevelSystem();
     }
     private void Update()
     {
         GetInputValue();
         StateMachine.CurrentState.LogicUpdate();
 
-        TakeButtonFromKeyboard();
+        HandleKeyboardInput();
 
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            AddXP(25);
-        }
+        if (Input.GetKeyDown(KeyCode.K)) AddXP(25);
     }
     void FixedUpdate()
     {
         PlayerMovement();
     }
-    private void GetAttributesWhenStart()
+    private void InitAttributes()
     {
         _defaultMoveSpeed = _moveSpeed;
         MoveSpeed = _moveSpeed;
@@ -130,21 +133,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         _collider = GetComponent<CapsuleCollider>();
         _body = transform.GetChild(1);
 
-        //UI
-        _healthText = GameObject.Find("CountHealth").GetComponent<TextMeshProUGUI>();
-        _currentHealthImg = GameObject.Find("CurrentHealthImg").GetComponent<Image>();
-
-        //Level
-        _levelText = GameObject.Find("LevelText").GetComponent<TextMeshProUGUI>();
-        _fillLevelCurrent = GameObject.Find("FillLevelCurrent").GetComponent<Image>();
-        _fillLevelMax = GameObject.Find("FillLevelMax").GetComponent<Image>();
-
         //Weapon
         _weaponSwitching = FindAnyObjectByType<WeaponSwitching>();
-
-        InitLevelSystem();
     }
-    private void GetStateWhenStart()
+    private void InitStateMachine()
     {
         StateMachine = new PlayerStateMachine();
         IdleState = new PlayerIdleState(this, StateMachine);
@@ -161,13 +153,14 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         //Crouch
         IsCrouching = Input.GetKey(KeyCode.LeftControl);
+
         //Jump
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             PlayerRb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         }
     }
-    private void TakeButtonFromKeyboard()
+    private void HandleKeyboardInput()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -207,9 +200,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _currentHP -= damage;
         _currentHP = Mathf.Clamp(_currentHP, 0, _maxHP);
 
-        float targetFill = (float)_currentHP / _maxHP;
-        _currentHealthImg.DOFillAmount(targetFill, 0.25f).SetEase(Ease.OutSine);
-        _healthText.text = $"{_currentHP} / {_maxHP}";
+        OnHealthChanged?.Invoke(_currentXP, _maxHP);
 
         if (_currentHP <= 0)
         {
@@ -227,36 +218,18 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 _currentHP += Mathf.RoundToInt(_healRecoveryTotal);
                 _currentHP = Mathf.Clamp(_currentHP, 0, _maxHP);
-                UpdateHealthUI();
+                OnHealthChanged?.Invoke(_currentXP, _maxHP);
             }
         }
     }
-    #region UI
-    private void UpdateHealthUI()
-    {
-        float targetFill = (float)_currentHP / _maxHP;
-        _currentHealthImg.DOFillAmount(targetFill, 0.25f).SetEase(Ease.OutSine);
-        _healthText.text = $"{_currentHP} / {_maxHP}";
-    }
-    #endregion
-    #region Level
-    private void InitLevelSystem()
-    {
-        _levelText.text = $"Level:{_currentLevel}";
-        _fillLevelCurrent.fillAmount = 0;
-        _fillLevelMax.fillAmount = 1;
-    }
+
+    #region LevelSystem
     public void AddXP(int amount)
     {
         _currentXP += amount;
 
-        // Cập nhật UI
-        _fillLevelCurrent.fillAmount = (float)_currentXP / _xpToNextLevel;
-
-        if (_currentXP >= _xpToNextLevel)
-        {
-            LevelUp();
-        }
+        OnXPChanged?.Invoke(_currentXP, _xpToNextLevel, _currentLevel);
+        if (_currentXP >= _xpToNextLevel) LevelUp();
     }
     private void LevelUp()
     {
@@ -265,13 +238,11 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         _xpToNextLevel = Mathf.RoundToInt(_xpToNextLevel * _xpGrowthRate);
 
-        _levelText.text = $"Level: {_currentLevel}";
-
-        _fillLevelCurrent.fillAmount = (float)_currentXP / _xpToNextLevel;
-
         _maxHP += 10;
         _currentHP = _maxHP;
-        UpdateHealthUI();
+
+        OnXPChanged?.Invoke(_currentXP, _xpToNextLevel, _currentLevel);
+        OnHealthChanged?.Invoke(_currentHP, _maxHP);
     }
     #endregion
     #region Gun
@@ -308,7 +279,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
         }
 
-        // 🔥 Update UI sau khi thay đổi
         _weaponSwitching.CurrentGun?.UpdateAmmoUIText();
     }
 
@@ -316,14 +286,12 @@ public class PlayerController : MonoBehaviour, IDamageable
     #region UseItem
     private void UseMedicine(MedicineSO medicineSO, EquipmentSlotUI slotUI)
     {
-        if (medicineSO == null) return;
-
-        if (_currentHP >= _maxHP) return;
+        if (medicineSO == null || _currentHP >= _maxHP) return;
 
         _currentHP += medicineSO.recoveryHP;
         _currentHP = Mathf.Clamp(_currentHP, 0, _maxHP);
 
-        UpdateHealthUI();
+        OnHealthChanged?.Invoke(_currentXP, _maxHP);
 
         slotUI.ReduceItem(1);
 
@@ -334,7 +302,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         var equipmentSlots = FindObjectsByType<EquipmentSlotUI>(FindObjectsSortMode.None);
         foreach (var slot in equipmentSlots)
-        {
+        {   
             if (slot.AllowedType == ItemType.Medicine && !slot.IsEmpty)
             {
                 var medicineSO = slot.GetItem() as MedicineSO;

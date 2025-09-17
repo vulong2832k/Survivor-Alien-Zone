@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class InventorySystem : MonoBehaviour
 {
-    [SerializeField] private int _slotCount;
     public List<InventorySlot> slots = new List<InventorySlot>();
+    [SerializeField] private int _slotCount;
+
+    public event Action OnInventoryChanged;
 
     private void Awake()
     {
@@ -25,7 +28,11 @@ public class InventorySystem : MonoBehaviour
                     int canAdd = Mathf.Min(amount, item.maxStack - slot.amount);
                     slot.amount += canAdd;
                     amount -= canAdd;
-                    if (amount <= 0) return 0;
+                    if (amount <= 0)
+                    {
+                        OnInventoryChanged?.Invoke();
+                        return 0;
+                    }
                 }
             }
         }
@@ -36,10 +43,14 @@ public class InventorySystem : MonoBehaviour
                 int canAdd = Mathf.Min(amount, item.maxStack);
                 slot.AssignItem(item, canAdd);
                 amount -= canAdd;
-                if (amount <= 0) return 0;
+                if (amount <= 0)
+                {
+                    OnInventoryChanged?.Invoke();
+                    return 0;
+                }
             }
         }
-
+        OnInventoryChanged?.Invoke();
         return amount;
     }
 
@@ -51,9 +62,13 @@ public class InventorySystem : MonoBehaviour
             {
                 slot.amount -= amount;
                 if(slot.amount <= 0) slot.Clear();
+                OnInventoryChanged?.Invoke();
                 return;
             }
         }
     }
-    
+    public void ForceRefresh()
+    {
+        OnInventoryChanged?.Invoke();
+    }
 }
