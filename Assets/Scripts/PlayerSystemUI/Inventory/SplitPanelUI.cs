@@ -71,14 +71,11 @@ public class SplitPanelUI : MonoBehaviour
                     return;
                 }
                 _currentSlot.UpdateUI();
-                Debug.Log($"Tách {amount} khỏi slot. Còn lại: {slot.amount}");
-
                 gameObject.SetActive(false);
             }
         }
         else
         {
-            Debug.Log("❌ Người chơi chưa nhập số hợp lệ!");
             gameObject.SetActive(false);
         }
     }

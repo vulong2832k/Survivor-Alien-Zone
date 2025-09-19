@@ -51,9 +51,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     private int _currentXP = 0;
     [SerializeField] private int _xpToNextLevel = 100;
     [SerializeField] private float _xpGrowthRate = 1.2f;
-    [SerializeField] private TextMeshProUGUI _levelText;
-    [SerializeField] private Image _fillLevelCurrent;
-    [SerializeField] private Image _fillLevelMax;
 
     [Header("Slot Gun: ")]
     [SerializeField] private WeaponSlots[] _weaponSlots;
@@ -72,10 +69,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     [Header("Componenets: ")]
     public Rigidbody PlayerRb { get; private set; }
 
-    [Header("UI: ")]
-    [SerializeField] private TextMeshProUGUI _healthText;
-    [SerializeField] private Image _currentHealthImg;
-
     //Event
     public event Action<int, int> OnHealthChanged;
     public event Action<int, int, int> OnXPChanged;
@@ -89,7 +82,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Start()
     {
         InitStateMachine();
-        OnHealthChanged?.Invoke(_currentXP, _maxHP);
+        OnHealthChanged?.Invoke(_currentHP, _maxHP);
         OnXPChanged?.Invoke(_currentXP, _xpToNextLevel, _currentLevel);
         StartCoroutine(HealOverTime());
     }
@@ -200,7 +193,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _currentHP -= damage;
         _currentHP = Mathf.Clamp(_currentHP, 0, _maxHP);
 
-        OnHealthChanged?.Invoke(_currentXP, _maxHP);
+        OnHealthChanged?.Invoke(_currentHP, _maxHP);
 
         if (_currentHP <= 0)
         {
@@ -218,7 +211,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 _currentHP += Mathf.RoundToInt(_healRecoveryTotal);
                 _currentHP = Mathf.Clamp(_currentHP, 0, _maxHP);
-                OnHealthChanged?.Invoke(_currentXP, _maxHP);
+                OnHealthChanged?.Invoke(_currentHP, _maxHP);
             }
         }
     }
@@ -291,18 +284,16 @@ public class PlayerController : MonoBehaviour, IDamageable
         _currentHP += medicineSO.recoveryHP;
         _currentHP = Mathf.Clamp(_currentHP, 0, _maxHP);
 
-        OnHealthChanged?.Invoke(_currentXP, _maxHP);
+        OnHealthChanged?.Invoke(_currentHP, _maxHP);
 
         slotUI.ReduceItem(1);
-
     }
-    #endregion
-
     private void TryUseMedicine()
     {
-        var equipmentSlots = FindObjectsByType<EquipmentSlotUI>(FindObjectsSortMode.None);
-        foreach (var slot in equipmentSlots)
-        {   
+        var slots = EquipmentSystem.Instance.GetAllSlots();
+
+        foreach (var slot in slots)
+        {
             if (slot.AllowedType == ItemType.Medicine && !slot.IsEmpty)
             {
                 var medicineSO = slot.GetItem() as MedicineSO;
@@ -314,6 +305,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
         }
     }
+
+    #endregion
     private void OnDrawGizmosSelected()
     {
         if (_groundCheck != null)

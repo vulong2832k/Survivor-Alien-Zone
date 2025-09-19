@@ -15,8 +15,9 @@ MonoBehaviour:
   itemName: "H\u1ED3i m\xE1u nh\u1ECF"
   icon: {fileID: 21300018, guid: 64a7c8f38d213274f8f497bb697b41a8, type: 3}
   itemType: 3
+  worldPrefab: {fileID: 0}
   isStackable: 1
   maxStack: 5
   gunAttributes: {fileID: 0}
-  recoveryHP: 0
+  recoveryHP: 20
   medicineType: 0

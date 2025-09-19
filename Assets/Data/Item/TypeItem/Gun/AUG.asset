@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: AUG
   icon: {fileID: 21300000, guid: c5a54d24e3f443f4da1ccc130b23a947, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 5511679482897751273, guid: 7541eb37a8474174cbdc12e94b5a852e, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: c4d940efaa8206a43aaf2b27eb3801de, type: 2}

@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Anaconda
   icon: {fileID: 21300000, guid: 6bd38f91f594e044695f783fcc8d1031, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 8878714796718611168, guid: 01aeeadc7bfce044890d98678da490d9, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: 1ac84f0c0e967ba41bbf353c34ffd0e0, type: 2}

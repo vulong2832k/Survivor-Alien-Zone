@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: M9A3
   icon: {fileID: 21300000, guid: ed1c4869dca6add4aab2646993bd4bc7, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 6048756005819769318, guid: 271261510c3634e40a41cd0f30021ea3, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: 1f9c4b2818a3aeb448b79f3c2e08de6e, type: 2}

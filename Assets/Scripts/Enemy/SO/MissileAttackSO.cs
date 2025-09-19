@@ -1,10 +1,9 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "RangerAttackSO", menuName = "EnemySO/RangerAttackSO")]
-public class RangerAttackSO : EnemyAttackSO
+[CreateAssetMenu(fileName = "MissilerAttackSO", menuName = "EnemySO/MissilerAttackSO")]
+public class MissileAttackSO : EnemyAttackSO
 {
-    [SerializeField] private string _bulletKey = "EnemyBulletNormal";
-
+    [SerializeField] private string _missileKey = "EnemyBulletMissile";
     public override AttackResult EnemyAttack(Transform enemy, Transform target, int damage)
     {
         Transform firePoint = enemy.Find("FirePoint");
@@ -12,12 +11,13 @@ public class RangerAttackSO : EnemyAttackSO
 
         Vector3 dir = (target.position - firePoint.position).normalized;
 
-        GameObject bullet = MultiObjectPool.Instance.SpawnFromPool(_bulletKey, firePoint.position, Quaternion.LookRotation(dir));
+        GameObject missile = MultiObjectPool.Instance.SpawnFromPool(_missileKey, firePoint.position, Quaternion.LookRotation(dir));
 
-        if (bullet != null && bullet.TryGetComponent(out EnemyBulletBase bulletScript))
+        if (missile != null && missile.TryGetComponent(out EnemyBulletBase missileScript))
         {
             int enemyDamage = enemy.GetComponent<EnemyStats>().Damage;
-            bulletScript.Init(dir, enemyDamage);
+
+            missileScript.Init(dir, enemyDamage);
 
             return new AttackResult
             {
@@ -26,6 +26,7 @@ public class RangerAttackSO : EnemyAttackSO
                 damage = enemyDamage
             };
         }
+
         return new AttackResult
         {
             attacker = enemy,
@@ -33,5 +34,4 @@ public class RangerAttackSO : EnemyAttackSO
             damage = 0
         };
     }
-
 }

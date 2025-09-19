@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: M16A4
   icon: {fileID: 21300000, guid: 95d891a36e235b5488155354c65b6e6a, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 6652579602551576122, guid: eeb1e75f14b17844c968157edcb5d929, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: 73209e9476ce3254995ac2e1b431549f, type: 2}

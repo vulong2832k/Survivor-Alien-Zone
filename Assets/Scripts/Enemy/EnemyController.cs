@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -45,7 +46,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     }
     private void Update()
     {
-        CheckAttack();
+        CheckTypeAttack();
     }
     private void FixedUpdate()
     {
@@ -75,7 +76,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             yield return new WaitForSeconds(0.1f);
         }
     }
-    private void CheckAttack()
+    private void CheckTypeAttack()
     {
         if (_targetPlayer == null) return;
 
@@ -86,14 +87,25 @@ public class EnemyController : MonoBehaviour, IDamageable
         {
             Vector3 lookDir = (_targetPlayer.position - transform.position).normalized;
             lookDir.y = 0f;
-            transform.rotation = Quaternion.LookRotation(lookDir);
+            transform.rotation = Quaternion .LookRotation(lookDir);
         }
-
         if (_playerInRange)
         {
-            if(!_isAttacking && _cooldown <= 0)
+            if (!_isAttacking && _cooldown <= 0)
             {
-                StartCoroutine(AttackRoutine());
+                switch (dataEnemy.TypeEnemy)
+                {
+                    case TypeEnemy.normal:
+                    case TypeEnemy.Explosion:
+                        StartCoroutine(AttackMeleeRoutine());
+                        break;
+                    case TypeEnemy.ranger:
+                        StartCoroutine(AttackRangerRoutine());
+                        break;
+                    case TypeEnemy.boss:
+                        StartCoroutine(AttackBossRoutine());
+                        break;
+                }
             }
             else
             {
@@ -104,9 +116,11 @@ public class EnemyController : MonoBehaviour, IDamageable
         {
             ResumeMoving();
         }
+
         _cooldown -= Time.deltaTime;
     }
-    private IEnumerator AttackRoutine()
+
+    private IEnumerator AttackMeleeRoutine()
     {
         _isAttacking = true;
         StopMoving();
@@ -124,9 +138,33 @@ public class EnemyController : MonoBehaviour, IDamageable
         _cooldown = dataEnemy.AttackCooldown;
 
         yield return new WaitForSeconds(1f);
-
         _isAttacking = false;
     }
+    private IEnumerator AttackRangerRoutine()
+    {
+        _isAttacking = true;
+        StopMoving();
+
+        dataEnemy.AttackStrategy.EnemyAttack(transform, _targetPlayer, _stats.Damage);
+
+        _cooldown = dataEnemy.AttackCooldown;
+
+        yield return new WaitForSeconds(1f);
+        _isAttacking = false;
+    }
+    private IEnumerator AttackBossRoutine()
+    {
+        _isAttacking = true;
+        StopMoving();
+
+        dataEnemy.AttackStrategy.EnemyAttack(transform, _targetPlayer, _stats.Damage);
+
+        _cooldown = dataEnemy.AttackCooldown;
+
+        yield return new WaitForSeconds(1f);
+        _isAttacking = false;
+    }
+
     public void StartExlosionAttackCoroutine(IEnumerator routine)
     {
         StartCoroutine(routine);

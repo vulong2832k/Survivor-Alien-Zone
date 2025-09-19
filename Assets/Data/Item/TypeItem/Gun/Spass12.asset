@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Spass12
   icon: {fileID: 21300000, guid: da335962986af7f409c6909996a686b8, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 6760154847372062668, guid: fee09fd899411624e8547c741ecf5505, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: 4ab11d94b44475c43bd07ae52846c259, type: 2}

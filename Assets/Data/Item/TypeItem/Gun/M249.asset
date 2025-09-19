@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: M249
   icon: {fileID: 21300000, guid: 12e4e2920fda6a048881bc97c59374df, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 4582768969343196933, guid: b572d5498adb5654f874c7152da781fd, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: 2f116e5d4c1158a429a8a6440b6801ec, type: 2}

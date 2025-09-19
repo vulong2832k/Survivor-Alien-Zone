@@ -15,22 +15,19 @@ public class SuicideAttackSO : EnemyAttackSO
         EnemyController controller = enemy.GetComponent<EnemyController>();
         if (controller != null)
         {
-            controller.StartExlosionAttackCoroutine(ExplodeAfterDelay(enemy));
+            controller.StartExlosionAttackCoroutine(ExplodeAfterDelay(enemy, controller));
         }
         return null;
     }
 
-    private IEnumerator ExplodeAfterDelay(Transform enemy)
+    private IEnumerator ExplodeAfterDelay(Transform enemy, EnemyController controller)
     {
         Vector3 originalScale = enemy.localScale;
         enemy.DOScale(originalScale * _scaleMultiplier, _explosionDelay).SetEase(Ease.InOutSine);
 
         yield return new WaitForSeconds(_explosionDelay);
 
-        GameObject effect = MultiObjectPool.Instance.SpawnFromPool(_explosionEffectKey, enemy.position, Quaternion.identity);
-        
         EnemyStats stats = enemy.GetComponent<EnemyStats>();
-        
         Collider[] hits = Physics.OverlapSphere(enemy.position, _explosionRadius);
         foreach (Collider hit in hits)
         {
@@ -41,7 +38,19 @@ public class SuicideAttackSO : EnemyAttackSO
             }
         }
 
+        GameObject effect = MultiObjectPool.Instance.SpawnFromPool(_explosionEffectKey, enemy.position, Quaternion.identity);
+
+        ParticleSystem particleSystem = effect.GetComponent<ParticleSystem>();
+        float totalTime = (particleSystem != null) ? particleSystem.main.duration + particleSystem.main.startLifetime.constantMax : 2f;
+        
+        controller.StartExlosionAttackCoroutine(ReturnEffectAfter(effect, totalTime));
+        
         enemy.localScale = originalScale;
         MultiObjectPool.Instance.ReturnToPool("Enemy", enemy.gameObject);
+    }
+    private IEnumerator ReturnEffectAfter(GameObject effect, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        MultiObjectPool.Instance.ReturnToPool(_explosionEffectKey, effect);
     }
 }

@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: M82A1
   icon: {fileID: 21300000, guid: e8348c880ca92914a900efa225900877, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 424726127838042348, guid: d48ee96d8c53ead4c93a553e71c49718, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: f537848659a945e48ac146186793d548, type: 2}

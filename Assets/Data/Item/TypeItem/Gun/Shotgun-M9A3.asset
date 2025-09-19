@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Shotgun-M3
   icon: {fileID: 21300000, guid: 404be959d237bfb4590e1d27d8624e24, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 3991827001064913153, guid: 7a992f84d5c806647961ecbfa1ea6272, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: 2180f302eccfe2142941e51b4ad5a0e3, type: 2}

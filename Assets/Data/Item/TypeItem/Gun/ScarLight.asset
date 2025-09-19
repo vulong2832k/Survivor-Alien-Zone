@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: ScarLight
   icon: {fileID: 21300000, guid: 64aba36616e52404eb635a357ca647a0, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 5929624587452272789, guid: cedde74169d7de24e8dddb528d8533c7, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: 866687556b6c01c418750b4b2ce824e6, type: 2}

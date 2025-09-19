@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Dragunov
   icon: {fileID: 21300000, guid: 55bf071b9b9167f498dbc5b7f9756ffd, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 3984357092470739749, guid: 40618ad2d27a8d2468614ac670bff6ea, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: 3a809ed7e846c4d4392e3a64ab3cb660, type: 2}

@@ -89,8 +89,6 @@ public class EquipmentSlotUI : MonoBehaviour, IDropHandler, IPointerClickHandler
             }
         }
     }
-
-
     public void Unequip()
     {
         if (_slot.IsEmpty) return;

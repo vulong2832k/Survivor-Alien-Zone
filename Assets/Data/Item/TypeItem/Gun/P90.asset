@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: P90
   icon: {fileID: 21300000, guid: 9d50f40870cec4d408c94e83a41ddbdb, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 7142684126476301313, guid: ddba4ed12e9f7f046b96c11362431e69, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: f66be24cccd849444be0b16a166d32e4, type: 2}

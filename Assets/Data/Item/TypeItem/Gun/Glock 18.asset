@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Glock 18
   icon: {fileID: 21300000, guid: 385e8b04e706181408b3531d345eedcd, type: 3}
   itemType: 0
+  worldPrefab: {fileID: 6824064938302255614, guid: c8bad666454838f48be5d738653dbd0a, type: 3}
   isStackable: 0
   maxStack: 1
   gunAttributes: {fileID: 11400000, guid: 486ed33d444e96449ad978db66c8efc3, type: 2}

@@ -151,10 +151,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentHP: 0
-  _cooldown: 0
   dataEnemy: {fileID: 11400000, guid: 72368a04046cedc40aa0c4af8865131d, type: 2}
   _targetPlayer: {fileID: 0}
-  _enemyKey: Enemy Ranger
+  _enemyKey: EnemyRanger
   _stats: {fileID: 0}
 --- !u!195 &9010028345315002441
 NavMeshAgent:

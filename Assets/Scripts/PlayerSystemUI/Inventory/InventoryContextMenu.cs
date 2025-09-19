@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Cinemachine;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryContextMenu : MonoBehaviour
@@ -70,6 +71,21 @@ public class InventoryContextMenu : MonoBehaviour
         if (_currentSlot == null) return;
         var slot = _currentSlot.GetSlot();
         if (slot == null || slot.IsEmpty) return;
+
+        ItemSO item = slot.item;
+        int amount = slot.amount;
+
+        if (item != null && item.worldPrefab != null)
+        {
+            Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+            Vector3 dropPos = player.position + player.forward * 1f;
+
+            GameObject drop = GameObject.Instantiate(item.worldPrefab, dropPos, Quaternion.identity);
+
+            var pickup = drop.GetComponent<ItemPickup>();
+            if (pickup == null) return;
+            pickup.Setup(item, amount);
+        }
 
         slot.Clear();
         _currentSlot.UpdateUI();
