@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public Transform CameraTransform => _cameraTransform;
     private WeaponSwitching _weaponSwitching;
 
+
     [Header("States: ")]
     public PlayerStateMachine StateMachine { get; private set; }
     public PlayerIdleState IdleState { get; private set; }
@@ -126,7 +127,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         _collider = GetComponent<CapsuleCollider>();
         _body = transform.GetChild(1);
 
-        //Weapon
         _weaponSwitching = FindAnyObjectByType<WeaponSwitching>();
     }
     private void InitStateMachine()
@@ -272,7 +272,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
         }
 
-        _weaponSwitching.CurrentGun?.UpdateAmmoUIText();
+        WeaponEvents.OnWeaponChanged?.Invoke(_weaponSwitching.CurrentGun);
     }
 
     #endregion

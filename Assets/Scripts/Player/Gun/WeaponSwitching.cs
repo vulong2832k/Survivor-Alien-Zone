@@ -23,10 +23,8 @@ public class WeaponSwitching : MonoBehaviour
 
     private void Awake()
     {
-        // Nếu chưa gán từ Inspector thì tìm trong chính Player instance
         if (_gunParent == null)
         {
-            // Tìm trong object này (Player instance), không phải prefab
             var gunSlots = transform.Find("Head/Gun");
             if (gunSlots != null)
             {
@@ -123,10 +121,10 @@ public class WeaponSwitching : MonoBehaviour
         _currentIndex = index;
         _switchImage.UpdateImageUI(index);
 
-        if (CurrentGun != null)
-        {
-            CurrentGun.UpdateAmmoUIText();
-        }
+        if (index >= 0 && _switchImage != null)
+            _switchImage.UpdateImageUI(index);
+
+        WeaponEvents.OnWeaponChanged?.Invoke(CurrentGun);
     }
     public void SpawnAndEquipWeapon(int slotIndex, GunAttributes gunAttributes, bool showImmediately = false)
     {

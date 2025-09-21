@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,19 +20,25 @@ public class GunController : MonoBehaviour
     [SerializeField] private int _reserveAmmo;
     private float _fireCooldown;
 
+    public event Action<int, int, bool> OnAmmoChanged;
     public GunAttributes GunAttributes => _soHolder.GunAttributes;
     public GunType GunType => GunAttributes.GunType;
 
     public int CurrentAmmo => _currentAmmo;
     public int ReserveAmmo => _reserveAmmo;
 
-    [Header("UI: ")]
-    [SerializeField] private TextMeshProUGUI _ammoText;
-    [SerializeField] private Image _ammoImage;
-
     [Header("Effects: ")]
     [SerializeField] private GameObject _muzzleFlashEffect;
     private ParticleSystem _muzzleFlashParticle;
+
+    public float FireCooldownNormalized
+    {
+        get
+        {
+            if (GunAttributes == null || GunAttributes.FireSpeed <= 0f) return 0f;
+            return Mathf.Clamp01(1f - (_fireCooldown / GunAttributes.FireSpeed));
+        }
+    }
 
     private void Awake()
     {
@@ -40,20 +47,6 @@ public class GunController : MonoBehaviour
 
         if (_firePoint == null)
             _firePoint = transform.Find("FirePoint");
-
-        if (_ammoText == null)
-        {
-            GameObject ammoTextObj = GameObject.Find("AmmoText");
-            if (ammoTextObj != null)
-                _ammoText = ammoTextObj.GetComponent<TextMeshProUGUI>();
-        }
-
-        if (_ammoImage == null)
-        {
-            GameObject ammoImgObj = GameObject.Find("AmmoImage");
-            if (ammoImgObj != null)
-                _ammoImage = ammoImgObj.GetComponent<Image>();
-        }
 
         if (_muzzleFlashEffect != null)
             _muzzleFlashParticle = _muzzleFlashEffect.GetComponent<ParticleSystem>();
@@ -68,17 +61,26 @@ public class GunController : MonoBehaviour
         }
 
         SetTypeShoot();
-        UpdateAmmoUIText();
+        NotifyAmmoChanged();
     }
 
     private void Update()
     {
         HandleShooting();
         HandleReload();
-        UpdateAmmoUIImage();
 
         if (_fireCooldown > 0)
+        {
+            float prev = _fireCooldown;
+
             _fireCooldown -= Time.deltaTime;
+
+            if (_fireCooldown < 0) _fireCooldown = 0f;
+            if (Mathf.Abs(prev - _fireCooldown) > 0.0001f)
+            {
+                NotifyAmmoChanged();
+            }
+        }
     }
 
     private void SetTypeShoot()
@@ -119,7 +121,7 @@ public class GunController : MonoBehaviour
 
         _shootStrategy?.Shoot(_firePoint, shootDirection, GunAttributes, _bulletKey);
 
-        UpdateAmmoUIText();
+        NotifyAmmoChanged();
         DisplayEffectMuzzleFlash();
 
         Debug.DrawRay(_firePoint.position, shootDirection * 100f, Color.red, 1f);
@@ -139,7 +141,6 @@ public class GunController : MonoBehaviour
     private IEnumerator Reload()
     {
         _isReloading = true;
-        UpdateAmmoUIText(true);
 
         yield return new WaitForSeconds(GunAttributes.Reload);
 
@@ -159,40 +160,18 @@ public class GunController : MonoBehaviour
         _reserveAmmo = Mathf.Clamp(_reserveAmmo, 0, GunAttributes.MaxAmmo);
 
         _isReloading = false;
-        UpdateAmmoUIText();
+        NotifyAmmoChanged();
     }
 
     #region UI
-    public void UpdateAmmoUIText(bool isReloading = false)
-    {
-        if (_ammoText == null) return;
-
-        if (isReloading)
-        {
-            _ammoText.text = "Reloading...";
-            _ammoText.color = Color.yellow;
-        }
-        else
-        {
-            _ammoText.text = $"{_currentAmmo:D3} / {_reserveAmmo:D3}";
-            _ammoText.color = (_reserveAmmo == 0 && _currentAmmo == 0) ? Color.red : Color.white;
-        }
-    }
-
     public void AddReserveAmmo(int amount)
     {
         _reserveAmmo += amount;
         _reserveAmmo = Mathf.Clamp(_reserveAmmo, 0, GunAttributes.MaxAmmo);
-
-        UpdateAmmoUIText();
     }
-
-    private void UpdateAmmoUIImage()
+    private void NotifyAmmoChanged(bool isReloading = false)
     {
-        if (_ammoImage == null || GunAttributes == null) return;
-
-        float fill = 1f - (_fireCooldown / GunAttributes.FireSpeed);
-        _ammoImage.fillAmount = Mathf.Clamp01(fill);
+        OnAmmoChanged?.Invoke(_currentAmmo, _reserveAmmo, isReloading);
     }
     #endregion
 

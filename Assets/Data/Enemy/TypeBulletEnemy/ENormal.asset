@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ENormal
   m_EditorClassIdentifier: 
   poolKey: EnemyBulletNormal
-  speed: 1
+  speed: 20
   lifeTime: 5
   explosive: 0
   explosionRadius: 0

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: EMissile
   m_EditorClassIdentifier: 
   poolKey: EnemyBulletMissile
-  speed: 1
+  speed: 4
   lifeTime: 5
-  explosive: 0
-  explosionRadius: 0
+  explosive: 1
+  explosionRadius: 3
   explosionDamage: 0

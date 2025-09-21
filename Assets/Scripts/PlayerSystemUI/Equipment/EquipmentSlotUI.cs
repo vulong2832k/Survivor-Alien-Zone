@@ -40,8 +40,8 @@ public class EquipmentSlotUI : MonoBehaviour, IDropHandler, IPointerClickHandler
             case ItemType.Weapon: return 1;
             case ItemType.HeadArmor: return 1;
             case ItemType.Armor: return 1;
-            case ItemType.Medicine: return 5;
-            case ItemType.Grenade: return 5;
+            case ItemType.Medicine: return 10;
+            case ItemType.Grenade: return 15;
             default: return 99;
         }
     }

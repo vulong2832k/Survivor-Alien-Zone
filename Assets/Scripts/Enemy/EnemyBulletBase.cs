@@ -48,18 +48,42 @@ public abstract class EnemyBulletBase : MonoBehaviour
     }
     protected virtual void Explode()
     {
-        if (_data.explosive)
+        int baseDamage = _data.explosionDamage > 0 ? _data.explosionDamage : _currentDamage;
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, _data.explosionRadius);
+        foreach (var hit in hits)
         {
-            Collider[] hits = Physics.OverlapSphere(transform.position, _data.explosionRadius);
-            foreach (var hit in hits)
+            IDamageable target = null;
+
+            if (hit.TryGetComponent(out IDamageable comp) || hit.transform.root.TryGetComponent(out comp))
             {
-                if (hit.TryGetComponent(out IDamageable target))
-                {
-                    target.TakeDamage(_currentDamage);
-                }
+                target = comp;
+            }
+
+            if (target != null)
+            {
+                float distance = Vector3.Distance(transform.position, hit.transform.position);
+
+                if (distance > _data.explosionRadius) continue;
+                float damageMultiplier = Mathf.Max(0f, 1f - 0.2f * Mathf.Floor(distance));
+                int finalDamage = Mathf.RoundToInt(baseDamage * damageMultiplier);
+
+                if (finalDamage > 0)
+                    target.TakeDamage(finalDamage);
+            }
+        }
+
+        GameObject explosionVFX = MultiObjectPool.Instance.SpawnFromPool("EffectExplosionMissile", transform.position, Quaternion.identity);
+        if (explosionVFX != null)
+        {
+            var ps = explosionVFX.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                Destroy(explosionVFX, ps.main.duration);
             }
         }
     }
+
     public virtual void Init(Vector3 direction, int damage)
     {
         _direction = direction.normalized;

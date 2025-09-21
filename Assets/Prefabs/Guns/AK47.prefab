@@ -48,9 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _firePoint: {fileID: 0}
-  _gunAttributes: {fileID: 0}
+  _soHolder: {fileID: 0}
+  _bulletKey: BulletPlayer
   _currentAmmo: 0
-  _bulletPool: {fileID: 0}
   _reserveAmmo: 0
   _ammoText: {fileID: 0}
   _ammoImage: {fileID: 0}
