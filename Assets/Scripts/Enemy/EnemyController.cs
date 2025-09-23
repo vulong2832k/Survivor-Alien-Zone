@@ -21,6 +21,10 @@ public class EnemyController : MonoBehaviour, IDamageable
     [Header("Logic: ")]
     private bool _isAttacking = false;
     private bool _playerInRange = false;
+    public bool IsAlive { get; private set; } = true;
+
+    //Event
+    public event Action<EnemyController> OnEnemyDie;
 
     private void Awake()
     {
@@ -184,7 +188,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         _currentHP -= damage;
 
-        if (_currentHP <= 0)
+        if (_currentHP <= 0 && IsAlive)
             Die();
     }
     private void UpdateColorEnemyByLevel()
@@ -207,6 +211,11 @@ public class EnemyController : MonoBehaviour, IDamageable
     }
     private void Die()
     {
+        if (!IsAlive) return;
+
+        IsAlive = false;
+        OnEnemyDie?.Invoke(this);
+
         MultiObjectPool.Instance.ReturnToPool(_enemyKey, gameObject);
         EnemyLoot loot = GetComponent<EnemyLoot>();
         loot?.DropLoot();
@@ -215,7 +224,6 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, dataEnemy?.AttackRange ?? 1f);
-
     }
     
 }

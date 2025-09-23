@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [System.Serializable]
 public class EnemyLevelSpawn
@@ -24,6 +25,9 @@ public class SpawnZone : MonoBehaviour
 
     private bool hasTriggered = false;
 
+    private List<EnemyController> _enemies = new List<EnemyController>();
+    public bool IsCleared { get; private set; } = false;
+
     private void Awake()
     {
         GetComponent<BoxCollider>().isTrigger = true;
@@ -40,6 +44,8 @@ public class SpawnZone : MonoBehaviour
 
     private void SpawnEnemies()
     {
+        IsCleared = false;
+
         foreach (var info in spawnList)
         {
             foreach (var levelInfo in info.levelDistribution)
@@ -55,9 +61,22 @@ public class SpawnZone : MonoBehaviour
                     {
                         controller.dataEnemy = info.enemyData;
                         enemy.GetComponent<EnemyStats>().Init(levelInfo.level);
+
+                        _enemies.Add(controller);
+                        controller.OnEnemyDie += HandleEnemyDie;
                     }
                 }
             }
+        }
+    }
+    private void HandleEnemyDie(EnemyController enemy)
+    {
+        enemy.OnEnemyDie -= HandleEnemyDie;
+        _enemies.Remove(enemy);
+
+        if (_enemies.Count == 0)
+        {
+            IsCleared = true;
         }
     }
 

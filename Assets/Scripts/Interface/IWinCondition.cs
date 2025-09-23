@@ -1,16 +1,7 @@
 using UnityEngine;
 
-public class IWinCondition : MonoBehaviour
+public interface IWinCondition
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    bool IsCompleted();
+    void StartCondition();
 }

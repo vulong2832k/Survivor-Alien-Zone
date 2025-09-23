@@ -3,8 +3,35 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    void Update()
+    [SerializeField] private IWinCondition[] _winConditions;
+
+    public bool IsGameOver {  get; private set; }
+    public bool IsVictory { get; private set; }
+
+    private void Start()
     {
+        _winConditions = GetComponentsInChildren<IWinCondition>();
+
+        foreach (var condition in _winConditions)
+        {
+            condition.StartCondition();
+        }
+    }
+    private void Update()
+    {
+        if (!IsGameOver)
+        {
+            foreach (var condition in _winConditions)
+            {
+                if (condition.IsCompleted())
+                {
+                    VictoryGame();
+                    Debug.Log("YOU WIN!");
+                    break;
+                }
+            }
+        }
+
         ResetGame();
     }
 
@@ -15,5 +42,15 @@ public class GameManager : MonoBehaviour
             Scene currentScene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(currentScene.buildIndex);
         }
+    }
+    private void VictoryGame()
+    {
+        IsGameOver = true;
+        IsVictory = true;
+    }
+    public void LoseGame()
+    {
+        IsGameOver = true;
+        IsVictory = false;
     }
 }

@@ -131,8 +131,7 @@ public class GunController : MonoBehaviour
     {
         if (_isReloading) return;
 
-        if (Input.GetKeyDown(KeyCode.R) &&
-            (_currentAmmo != GunAttributes.Ammo || _currentAmmo <= 0))
+        if ((Input.GetKeyDown(KeyCode.R) && _currentAmmo < GunAttributes.Ammo) || (_currentAmmo <= 0 && _reserveAmmo > 0))
         {
             StartCoroutine(Reload());
         }
@@ -141,6 +140,7 @@ public class GunController : MonoBehaviour
     private IEnumerator Reload()
     {
         _isReloading = true;
+        NotifyAmmoChanged(true);
 
         yield return new WaitForSeconds(GunAttributes.Reload);
 
@@ -160,7 +160,7 @@ public class GunController : MonoBehaviour
         _reserveAmmo = Mathf.Clamp(_reserveAmmo, 0, GunAttributes.MaxAmmo);
 
         _isReloading = false;
-        NotifyAmmoChanged();
+        NotifyAmmoChanged(false);
     }
 
     #region UI
