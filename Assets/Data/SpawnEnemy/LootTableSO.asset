@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: LootTableSO
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 0a40b5c8c9a6ef445997263f4fb784df, type: 2}
-  dropChange: 1
+  dropChange: 0.118
   minAmount: 1
   maxAmount: 1

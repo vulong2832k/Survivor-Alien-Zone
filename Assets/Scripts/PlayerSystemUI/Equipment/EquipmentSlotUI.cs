@@ -2,9 +2,12 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class EquipmentSlotUI : MonoBehaviour, IDropHandler, IPointerClickHandler
 {
+    public event Action<ItemSO, int> OnSlotChanged;
+
     [SerializeField] private ItemType _allowedType;
     [SerializeField] private Image _icon;
     [SerializeField] private Sprite _emptySlotSprite;
@@ -103,6 +106,7 @@ public class EquipmentSlotUI : MonoBehaviour, IDropHandler, IPointerClickHandler
 
         _slot.Clear();
         _icon.sprite = _emptySlotSprite;
+        NotifySlotChanged();
     }
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -123,6 +127,7 @@ public class EquipmentSlotUI : MonoBehaviour, IDropHandler, IPointerClickHandler
         {
             _amountText.text = _slot.amount.ToString();
         }
+        NotifySlotChanged();
     }
     public void ReduceItem(int amount)
     {
@@ -136,5 +141,13 @@ public class EquipmentSlotUI : MonoBehaviour, IDropHandler, IPointerClickHandler
         }
 
         UpdateAmountText();
+        NotifySlotChanged();
+    }
+    private void NotifySlotChanged()
+    {
+        if (_slot.IsEmpty)
+            OnSlotChanged?.Invoke(null, 0);
+        else
+            OnSlotChanged?.Invoke(_slot.item, _slot.amount);
     }
 }
