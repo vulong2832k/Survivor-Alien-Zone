@@ -125,12 +125,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _firePoint: {fileID: 0}
-  _gunAttributes: {fileID: 0}
+  _soHolder: {fileID: 0}
+  _bulletKey: BulletPlayerNormal
   _currentAmmo: 0
-  _bulletPool: {fileID: 0}
   _reserveAmmo: 0
-  _ammoText: {fileID: 0}
-  _ammoImage: {fileID: 0}
   _muzzleFlashEffect: {fileID: 284367517610011348}
 --- !u!1001 &654504118798187451
 PrefabInstance:

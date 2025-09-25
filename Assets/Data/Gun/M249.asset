@@ -27,3 +27,6 @@ MonoBehaviour:
   _recoilY: 5
   _recoilMax: 20
   _invertY: 0
+  _positionOffset: {x: 0, y: -0.044, z: 0}
+  _rotationOffset: {x: -2.02, y: 0, z: 0}
+  _scaleOffset: {x: 1, y: 1, z: 1}

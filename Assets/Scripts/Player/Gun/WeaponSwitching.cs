@@ -148,8 +148,10 @@ public class WeaponSwitching : MonoBehaviour
         }
 
         var gunInstance = Instantiate(gunAttributes.GunPrefab, slotTransform);
-        gunInstance.transform.localPosition = Vector3.zero;
-        gunInstance.transform.localRotation = Quaternion.identity;
+
+        gunInstance.transform.localPosition = gunAttributes.PositionOffset;
+        gunInstance.transform.localEulerAngles = gunAttributes.RotationOffset;
+        gunInstance.transform.localScale = gunAttributes.ScaleOffset;
 
         var gunController = gunInstance.GetComponent<GunController>();
         _equippedGuns[slotIndex] = gunController;

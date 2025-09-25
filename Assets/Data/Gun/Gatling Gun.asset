@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cdb710d438007f6458c12882c919dde9, type: 3}
-  m_Name: M82A1
+  m_Name: Gatling Gun
   m_EditorClassIdentifier: 
-  _name: M82A1
-  _damage: 1000
-  _ammo: 10
-  _reserveAmmo: 30
-  _maxAmmoReserve: 300
-  _fireSpeed: 5
-  _reload: 3
-  _gunPrefab: {fileID: 545700258636116911, guid: f72c37ae5451c4443af0434f41c30dc7, type: 3}
+  _name: Gatling Gun
+  _damage: 10
+  _ammo: 300
+  _reserveAmmo: 900
+  _maxAmmoReserve: 9000
+  _fireSpeed: 0.05
+  _reload: 6
+  _gunPrefab: {fileID: 5482395283052917940, guid: 910dd3c3386173547af9788132ae82b9, type: 3}
   _quantityPerShoot: 0
   _speardAngle: 0
-  _gunType: 4
-  _recoilX: 0
-  _recoilY: 0
-  _recoilMax: 0
+  _gunType: 6
+  _recoilX: 1
+  _recoilY: 1
+  _recoilMax: 15
   _invertY: 0
-  _positionOffset: {x: 0.004, y: 0, z: 0.105}
-  _rotationOffset: {x: 0, y: 0, z: 0}
+  _positionOffset: {x: 0.17, y: 0.03, z: -0.05}
+  _rotationOffset: {x: -2.87, y: 0, z: 0}
   _scaleOffset: {x: 1, y: 1, z: 1}

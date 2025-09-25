@@ -66,7 +66,16 @@ public class ItemPickup : MonoBehaviour
             int remaining = _playerInventory.AddItem(itemData, amount);
 
             if (remaining <= 0)
+            {
+                CollectItemsCondition condition = FindAnyObjectByType<CollectItemsCondition>();
+                if (condition != null)
+                {
+                    condition.AddItem(itemData);
+                }
+
                 Destroy(gameObject);
+            }
+                
             else
                 amount = remaining;
         }

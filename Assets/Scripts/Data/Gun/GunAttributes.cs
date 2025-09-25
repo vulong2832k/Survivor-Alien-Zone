@@ -25,10 +25,9 @@ public class GunAttributes : ScriptableObject
     [SerializeField] private float _reload;
     [SerializeField] private GameObject _gunPrefab;
 
-
     [Header("Stats Bonus Type Shotgun: ")]
-    [SerializeField] public int _quantityPerShoot;
-    [SerializeField] public float _speardAngle;
+    [SerializeField] private int _quantityPerShoot;
+    [SerializeField] private float _speardAngle;
 
     [Header("Types: ")]
     [SerializeField] private GunType _gunType;
@@ -39,7 +38,12 @@ public class GunAttributes : ScriptableObject
     [SerializeField] private float _recoilMax;
     [SerializeField] private bool _invertY = false;
 
+    [Header("Equip Offsets (local to slot)")]
+    [SerializeField] private Vector3 _positionOffset = Vector3.zero;
+    [SerializeField] private Vector3 _rotationOffset = Vector3.zero;
+    [SerializeField] private Vector3 _scaleOffset = Vector3.one;
 
+    // --- Properties ---
     public string Name => _name;
     public int Damage => _damage;
     public int Ammo => _ammo;
@@ -56,8 +60,12 @@ public class GunAttributes : ScriptableObject
     public float RecoilMax => _recoilMax;
     public bool InvertY => _invertY;
 
-    //Type Shotgun
+    // Type Shotgun
     public int QuantityPerShoot => _quantityPerShoot;
     public float SpeardAngle => _speardAngle;
 
+    // Offsets
+    public Vector3 PositionOffset => _positionOffset;
+    public Vector3 RotationOffset => _rotationOffset;
+    public Vector3 ScaleOffset => _scaleOffset;
 }

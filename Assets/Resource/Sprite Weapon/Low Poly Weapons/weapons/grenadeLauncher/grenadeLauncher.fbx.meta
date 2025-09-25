@@ -1,9 +1,21 @@
 fileFormatVersion: 2
 guid: 69829f5030de4bd4ebd70850c63a5e46
+AssetOrigin:
+  serializedVersion: 1
+  productId: 311983
+  packageName: Low Poly Weapons with stylized textures
+  packageVersion: 1.0
+  assetPath: Assets/Low Poly Weapons/weapons/grenadeLauncher/grenadeLauncher.fbx
+  uploadId: 736089
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: 5798ffb96ce8cef4c8fcf49995a7d192, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -105,10 +117,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 311983
-  packageName: Low Poly Weapons with stylized textures
-  packageVersion: 1.0
-  assetPath: Assets/Low Poly Weapons/weapons/grenadeLauncher/grenadeLauncher.fbx
-  uploadId: 736089

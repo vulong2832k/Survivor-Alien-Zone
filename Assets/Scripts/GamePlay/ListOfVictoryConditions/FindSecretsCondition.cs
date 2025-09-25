@@ -1,16 +1,22 @@
 using UnityEngine;
 
-public class FindSecretsCondition : MonoBehaviour
+public class FindSecretsCondition : MonoBehaviour, IWinCondition
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private int _totalSecretsCompleted = 3;
+    private int _foundSecrets = 0;
+
+    public void StartCondition()
     {
-        
+        _foundSecrets = 0;
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool IsCompleted()
     {
-        
+        return _foundSecrets >= _totalSecretsCompleted;
+    }
+
+    public void RegisterSecretFound()
+    {
+        _foundSecrets++;
     }
 }

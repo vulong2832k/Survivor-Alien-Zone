@@ -131,17 +131,19 @@ public class GunController : MonoBehaviour
     {
         if (_isReloading) return;
 
-        if ((Input.GetKeyDown(KeyCode.R) && _currentAmmo < GunAttributes.Ammo) || (_currentAmmo <= 0 && _reserveAmmo > 0))
+        bool use = Input.GetKeyDown(KeyCode.R) && _currentAmmo < GunAttributes.Ammo;
+        bool auto = _currentAmmo <= 0 && _reserveAmmo > 0;
+
+        if (use || auto)
         {
+            _isReloading = true;
+            NotifyAmmoChanged(true);
             StartCoroutine(Reload());
         }
     }
 
     private IEnumerator Reload()
     {
-        _isReloading = true;
-        NotifyAmmoChanged(true);
-
         yield return new WaitForSeconds(GunAttributes.Reload);
 
         int ammoNeeded = GunAttributes.Ammo - _currentAmmo;
@@ -162,6 +164,7 @@ public class GunController : MonoBehaviour
         _isReloading = false;
         NotifyAmmoChanged(false);
     }
+
 
     #region UI
     public void AddReserveAmmo(int amount)

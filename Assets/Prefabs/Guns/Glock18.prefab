@@ -48,12 +48,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _firePoint: {fileID: 0}
-  _gunAttributes: {fileID: 0}
+  _soHolder: {fileID: 0}
+  _bulletKey: BulletPlayerNormal
   _currentAmmo: 0
-  _bulletPool: {fileID: 0}
   _reserveAmmo: 0
-  _ammoText: {fileID: 0}
-  _ammoImage: {fileID: 0}
   _muzzleFlashEffect: {fileID: 6931255603746573374}
 --- !u!1 &1822760017244107313
 GameObject:

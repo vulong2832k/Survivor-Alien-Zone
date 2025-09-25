@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dc897cc919df1044b39e01d70e437ad, type: 3}
   m_Name: LootTableSO
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 0a40b5c8c9a6ef445997263f4fb784df, type: 2}
-  dropChange: 0.118
+  item: {fileID: 11400000, guid: f09e88835f2eff449a34ae3d8a6203ca, type: 2}
+  dropChange: 1
   minAmount: 1
   maxAmount: 1

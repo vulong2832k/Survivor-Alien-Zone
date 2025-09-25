@@ -7,6 +7,7 @@ public enum ItemType
     Medicine,
     Grenade,
     Ammo,
+    QuestC4
 }
 
 [CreateAssetMenu(fileName = "ItemSO", menuName = "Inventory/ItemSO")]
@@ -37,6 +38,7 @@ public class ItemSO : ScriptableObject
                 break;
             case ItemType.Medicine:
             case ItemType.Grenade:
+            case ItemType.QuestC4:
                 isStackable = true;
                 maxStack = 5;
                 break;
